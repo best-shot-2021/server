@@ -26,4 +26,6 @@ class FaceShapeEvaluator():
         elif result[0][4] == 1:
             final_result = "square"
 
+        # print(final_result)
+
         return final_result
