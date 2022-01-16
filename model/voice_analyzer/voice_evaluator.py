@@ -29,7 +29,28 @@ class VocieEvaluator():
                                 verbose=1)
         prediction=livepreds.argmax(axis=1)
         print(livepreds)
-        print(prediction[0])
 
-        return str(prediction[0])
+        result = str(prediction[0])
+        print(result)
+
+        #label-list
+        # 0 - female_angry /
+        # 1 - female_calm
+        # 2 - female_fearful
+        # 3 - female_happy /
+        # 4 - female_sad
+        # 5 - male_angry /
+        # 6 - male_calm
+        # 7 - male_fearful
+        # 8 - male_happy /
+        # 9 - male_sad
+
+        #angry, happy
+        if(result==0 or result==3 or result==5 or result==8):
+            final_result = str(1)
+        #calm, fearful, sad
+        else:
+            final_result = str(0)
+
+        return final_result
         

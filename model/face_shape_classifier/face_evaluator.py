@@ -11,21 +11,26 @@ class FaceShapeEvaluator():
         test_image = image.load_img(test_data, target_size = (200,200))
         #test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
-        result = self.model.predict(test_image)
+        prediction = self.model.predict(test_image)
 
-        final_result=""
+        if prediction[0][1] == 1:
+            result = "heart"
+        elif prediction[0][0] == 1:
+            result = "oblong"
+        elif prediction[0][2] == 1:
+            result = "oval"
+        elif prediction[0][3] == 1:
+            result = "round"
+        elif prediction[0][4] == 1:
+            result = "square"
 
-        if result[0][1] == 1:
-            final_result = "heart"
-        elif result[0][0] == 1:
-            final_result = "oblong"
-        elif result[0][2] == 1:
-            final_result = "oval"
-        elif result[0][3] == 1:
-            final_result = "round"
-        elif result[0][4] == 1:
-            final_result = "square"
+        print(result)
 
-        # print(final_result)
+        if(result=="square"):
+            final_result = str(0)
+        elif(result=="heart" or result=="round"):
+            final_result = str(1)
+        elif(result=="oval" or result=="oblong"):
+            final_result = str(2)
 
         return final_result
