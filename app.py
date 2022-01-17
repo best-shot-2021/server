@@ -8,17 +8,35 @@ import tensorflow
 from flask_cors import CORS
 
 import subprocess
+import logging
 
 app = Flask(__name__)
-CORS(app, resources={r'*': {'origins': '*'}})
+CORS(app)
+logging.getLogger('flask_cors').level = logging.DEBUG
+# CORS(app, resources={r'*': {'origins': '*'}})
+# CORS(app, support_credentials=True)
+# CORS(app, supports_credentials=True, origins="localhost:3000")
+# cors = CORS(app, resource={
+#     r"/*":{
+#         "origins":"*"
+#     }
+# })
+
 
 gpus = tensorflow.config.experimental.list_physical_devices('GPU')
-tensorflow.config.experimental.set_virtual_device_configuration(gpus[0], [tensorflow.config.experimental.VirtualDeviceConfiguration(memory_limit=6144)])
+tensorflow.config.experimental.set_virtual_device_configuration(gpus[0], [tensorflow.config.experimental.VirtualDeviceConfiguration(memory_limit=8192)])
 
 
 face_classifier = FaceShapeEvaluator('/root/server/model/face_shape_classifier/model_ver2.h5')
 voice_analyzer = VocieEvaluator()
 
+
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Origin', '*')
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#   return response
 
 @app.route('/face_classifier', methods=['POST'])
 def face_img_classifying():
@@ -35,7 +53,7 @@ def face_img_classifying():
 
         os.remove(path)
 
-        return result
+        return str(result)
 
 
 @app.route('/voice_analyzer', methods = ['POST'])
@@ -60,7 +78,7 @@ def voice_m4a_analyzing():
         os.remove(path_m4a)
         os.remove(path_wav)
 
-        return result
+        return str(result)
 
 
 @app.route('/mood_finder', methods=['POST'])

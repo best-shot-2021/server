@@ -30,7 +30,7 @@ class VocieEvaluator():
         prediction=livepreds.argmax(axis=1)
         print(livepreds)
 
-        result = str(prediction[0])
+        result = prediction[0]
         print(result)
 
         #label-list
@@ -45,12 +45,31 @@ class VocieEvaluator():
         # 8 - male_happy /
         # 9 - male_sad
 
-        #angry, happy
-        if(result==0 or result==3 or result==5 or result==8):
-            final_result = str(1)
-        #calm, fearful, sad
-        else:
+        final_result = str(-1)
+
+        #angry
+        if(result==0 or result==5):
             final_result = str(0)
+        #calm
+        elif(result==1 or result==6):
+            final_result = str(1)
+        #fearful
+        elif(result==2 or result==7):
+            final_result = str(2)
+        #happy
+        elif(result==3 or result==8):
+            final_result = str(3)
+        #sad
+        elif(result==4 or result==9):
+            final_result = str(4)
+
+
+        # #angry, happy
+        # if(result==0 or result==3 or result==5 or result==8):
+        #     final_result = str(1)
+        # #calm, fearful, sad
+        # else:
+        #     final_result = str(0)
 
         return final_result
         
